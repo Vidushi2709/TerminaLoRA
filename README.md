@@ -1,4 +1,6 @@
-# TerminaLoRA - CLI Assistant – Fine-Tuned TinyLlama for Terminal Automation
+# TerminaLoRA 
+
+## CLI Assistant – Fine-Tuned TinyLlama for Terminal Automation
 
 A lightweight language model fine-tuned using **LoRA** to act as a **CLI assistant** — turning natural language into actionable shell commands. It’s compact, fast, and trained on real-world Q\&A pairs for practical command-line tasks.
 
@@ -9,8 +11,7 @@ A lightweight language model fine-tuned using **LoRA** to act as a **CLI assista
 * Accepts **natural language** CLI instructions.
 * Responds with **minimal shell commands**.
 * Supports **dry-run** mode and logs actions.
-* Evaluated both **statically** (BLEU/ROUGE) and **dynamically** (task performance).
-
+* 
 ---
 
 ## 🛠️ Fine-Tuning Details
