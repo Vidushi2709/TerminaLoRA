@@ -1,17 +1,29 @@
-# 🧠 CLI Assistant – Fine-Tuned Mini LLM with LoRA
+# TerminaLoRA 
 
-This project demonstrates how to fine-tune a lightweight open-source language model (≤2B parameters) using LoRA for CLI (Command Line Interface) task automation. It includes data collection, model training, evaluation, and a working `agent.py` that responds to terminal instructions with step-by-step shell commands.
+## CLI Assistant – Fine-Tuned TinyLlama for Terminal Automation
+
+A lightweight language model fine-tuned using **LoRA** to act as a **CLI assistant** — turning natural language into actionable shell commands. It’s compact, fast, and trained on real-world Q\&A pairs for practical command-line tasks.
 
 ---
 
-## 📌 Objective
+## 🚀 What It Does
 
-Build a concise, command-focused CLI assistant that:
+* Accepts **natural language** CLI instructions.
+* Responds with **minimal shell commands**.
+* Supports **dry-run** mode and logs actions.
+* 
+---
 
-* Accepts natural language instructions.
-* Returns minimal, actionable shell commands.
-* Can dry-run and log actions via a terminal agent.
-* Is evaluated against a fixed test set and edge cases.
+## 🛠️ Fine-Tuning Details
+
+| **Base Model**    | TinyLlama/TinyLlama-1.1B-Chat-v1.0       |
+| ----------------- | ---------------------------------------- |
+| **Fine-Tuning**   | LoRA (Low-Rank Adaptation) using 🤗 PEFT |
+| **Epochs**        | **3**                                    |
+| **Precision**     | 8-bit optimizer (`paged_adamw_8bit`)     |
+| **Platform**      | Kaggle T4 GPU                            |
+| **Training Time** | \~45 minutes                             |
+| **Adapter Size**  | \~8.61 MB                                |
 
 ---
 
@@ -19,50 +31,72 @@ Build a concise, command-focused CLI assistant that:
 
 ```
 .
-├── data/                      # ≥150 Q&A pairs on command-line tasks
-├── my_finetuned_model/       # LoRA adapter files after training
-├── cli_agent.py                  # CLI Agent to accept instructions
-├── training.ipynb               # Training notebook (LoRA fine-tuning)
-├── eval_static.md            # Base vs Fine-tuned outputs + BLEU
-├── eval_dynamic.md           # Agent evaluation + scoring table
-├── report.md                 # One-page summary of process
-├── logs/
-│   └── trace.jsonl           # Dynamic logs of CLI queries
-├── README.md                 # You are here
-└── demo.mp4 / demo.loom      # Demo video (≤5 min)
+├── data/                      # Cleaned CLI Q&A dataset (~150 pairs)
+├── my_finetuned_model/       # LoRA adapter weights
+├── cli_agent.py              # CLI Assistant (inference interface)
+├── training.ipynb            # LoRA fine-tuning notebook
+├── logs/                     # CLI session logs
+│   └── trace.jsonl
 ```
 
 ---
 
-## 🛠️ Fine-Tuning Details
+## 🧾 Data Source
 
-* **Base Model:** [TinyLlama-1.1B](https://huggingface.co/cognitivecomputations/TinyLlama-1.1B)
-* **Training Approach:** LoRA (Low-Rank Adaptation)
-* **Frameworks Used:** 🤗 Transformers, 🤗 PEFT, BitsAndBytes
-* **Device:** Kaggle Nb T4 (Free)
-* **Dataset:** 150+ curated Q\&A pairs on Git, Bash, Python, `tar`, `grep`, `venv`, etc.
-* **Epochs:** 1
-* **Precision:** 8-bit 
+* **StackExchange SQL Query**
+  Extracted high-quality Q\&A pairs tagged with `bash`, `git`, `grep`.
+
+```sql
+SELECT TOP 150
+  Posts.Title,
+  Posts.Body,
+  Answers.Body AS Answer
+FROM Posts
+JOIN Posts AS Answers ON Posts.AcceptedAnswerId = Answers.Id
+WHERE Posts.Tags LIKE '%bash%' OR Posts.Tags LIKE '%git%' OR Posts.Tags LIKE '%grep%'
+AND Posts.PostTypeId = 1
+ORDER BY Posts.Score DESC
+```
+
+* Preprocessed and saved to `data/data_for_finetuning.json`.
 
 ---
 
-## 🤖 Running the CLI Agent
+## 🤖 Run the CLI Agent
 
 ```bash
-python agent.py
+python cli_agent.py
 ```
 
-This launches an interactive shell:
+Example usage:
 
 ```bash
 🧠 Enter your CLI instruction:
-> Create a new Git branch and switch to it
+> Check if Python is installed and show version
 
 💡 AI Plan:
-1. git checkout -b new-branch
+1. python --version
 
 💻 Dry-run Command:
-echo git checkout -b new-branch
+echo python --version
 
 📄 Logged to: logs/trace.jsonl
 ```
+
+---
+
+## 🔮 Future Work
+
+* **Longer training**: Further epochs may improve ROUGE/BLEU metrics.
+* **Multilingual CLI**: Hindi/Spanish tech command generation.
+* **Humor-Tuned LLM**: Training with casual, humorous CLI instructions to increase user engagement.
+
+---
+
+## 🏁 Conclusion
+
+This project proves that even **compact models** like TinyLlama can be fine-tuned to perform real-world tasks using LoRA with minimal compute and time. The assistant is fast, effective, and deployable in lightweight environments.
+
+---
+
+created by Vin ❤️
