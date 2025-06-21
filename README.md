@@ -11,7 +11,6 @@ A lightweight language model fine-tuned using **LoRA** to act as a **CLI assista
 * Accepts **natural language** CLI instructions.
 * Responds with **minimal shell commands**.
 * Supports **dry-run** mode and logs actions.
-* 
 ---
 
 ## 🛠️ Fine-Tuning Details
@@ -24,6 +23,13 @@ A lightweight language model fine-tuned using **LoRA** to act as a **CLI assista
 | **Platform**      | Kaggle T4 GPU                            |
 | **Training Time** | \~45 minutes                             |
 | **Adapter Size**  | \~8.61 MB                                |
+
+---
+## 📉 Training Loss Curve
+
+This graph shows the training loss over time during the 3-epoch fine-tuning of the CLI Assistant model.
+
+![Training Loss Curve](loss_loss_loss.png)
 
 ---
 
